@@ -1,0 +1,43 @@
+<h1 mat-dialog-title>Add new Employee Details </h1>
+<div mat-dialog-content style="width: 100%;">
+    <form [formGroup]="form" >
+      <div class="form-group">
+          <label for="firstname">First Name</label>
+        <input type="text"  class="form-control" id="firstname" formControlName="firstName" matInput  >
+      </div>
+      <div class="form-group">
+          <label for="lastname" >Last Name</label>
+        <input type="text" class="form-control" formControlName="lastName" matInput >
+      </div>
+      <div class="form-group">
+        <label for="email" >Email Address</label>
+        <input type="email" id="email" class="form-control" formControlName="email" matInput >
+    </div>
+    <div class="form-group">
+      <label for="gender" >Gender</label>
+      <select formControlName="gender" class="form-control" id="gender" >
+        <option *ngFor="let item of gender">{{item.name}}</option>
+      </select>
+   </div>
+    <div class="form-group">
+      <label for="role" >Role</label>
+      <select formControlName="role" class="form-control" id="role" >
+        <option *ngFor="let item of roles">{{item.name}}</option>
+      </select>
+   </div>
+   <div class="form-group">
+    <label for="city" >City</label>
+    <select formControlName="city" class="form-control" id="city" >
+      <option *ngFor="let item of city">{{item.name}}</option>
+    </select>
+ </div>
+ <div class="form-group">
+   <label for="address">Address</label>
+   <textarea class="form-control" formControlName="address"></textarea>
+ </div>
+    </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button color="warn" (click)="onNoClick()">Cancel</button>
+  <button mat-stroked-button color="accent" [mat-dialog-close]="this.form.value" cdkFocusInitial>Save</button>
+</div>

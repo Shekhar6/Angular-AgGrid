@@ -1,83 +1,64 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output,EventEmitter } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ApiDataService } from 'src/app/Services/api-data.service';
 
-//Declaring interface model
-export interface Employee {
-  FirstName : string;
-
-  LastName:string;
-
-  Gender:string;
-
-  Email:string;
-
-  Role : string;
-
-  City: string;
-  
-  Address : string;
-  
-}
 
 @Component({
   selector: 'app-add',
   templateUrl: './add.component.html',
   styleUrls: ['./add.component.scss']
 })
-export class AddComponent  implements OnInit {
+export class AddComponent implements OnInit {
 
-  //Declaring Reactive forms
-  form = new FormGroup({
-    firstName : new FormControl('',Validators.required),
-    lastName : new FormControl('',Validators.required),
-    email : new FormControl('',Validators.required),
-    gender : new FormControl('',Validators.required),
-    city : new FormControl('',Validators.required),
-    address : new FormControl('',Validators.required),
-    role : new FormControl('',Validators.required),
-  });
+  //input  decorators for getting data from root component
+  @Input() addItem;
+  @Input() gender;
+  @Input() roles;
+  @Input() city;
 
-  //updating data
-  UserData :Employee;
+//sending data to root component
+  @Output() closeForm =new  EventEmitter<boolean>();
 
-   //storing gender info from api
-   gender : [];
+  @Output() addData = new EventEmitter<any>();
 
-   //storing city info from api
-   city : [];
- 
-   //storing roles info from api
-   roles : [];
+  //formGroup
+  form:any;
 
-  constructor(
-    public dialogRef: MatDialogRef<AddComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Employee,private apiData:ApiDataService
-  ) {  }
   ngOnInit(): void {
-
-    this.UserData =this.data;
-    //reading city info
-    this.apiData.getCity().subscribe(res => {
-      this.city = res;
-     
-    })
-    //reading roles info
-    this.apiData.getRoles().subscribe(res => {
-      this.roles = res;
-     
-    })
-
-    //reading gender info
-    this.apiData.getGender().subscribe(res => {
-      this.gender = res;
+    console.log(this.addItem)
+    console.log(this.addItem)
+    if(this.addItem === undefined){
+    this.form = new FormGroup({
+      FirstName: new FormControl('',Validators.required),
+      LastName: new FormControl('',Validators.required),
+      Role: new FormControl('',Validators.required),
+      Gender:new FormControl('',Validators.required),
+      Address:new FormControl('',Validators.required),
+      City:new FormControl('',Validators.required),
+      Email:new FormControl('',Validators.required)
     })
   }
+  else {
+    this.form = new FormGroup({
+      FirstName: new FormControl(this.addItem[0].firstName,Validators.required),
+      LastName: new FormControl(this.addItem[0].lastName,Validators.required),
+      Role: new FormControl(this.addItem[0].role,Validators.required),
+      Gender:new FormControl(this.addItem[0].gender,Validators.required),
+      Address:new FormControl(this.addItem[0].address,Validators.required),
+      City:new FormControl(this.addItem[0].city,Validators.required),
+      Email:new FormControl(this.addItem[0].email,Validators.required)
+    })
 
-//closing dialog 
-  onNoClick(): void {
-    this.dialogRef.close();
+    /**firstName: 'shekhar', lastName: 'Patel', role: 'HR', gender: 'Male' */
   }
-
+    
+  }
+  //adding data 
+  onSubmit(){
+    this.addData.emit(this.form.value);
+    this.closeForm.emit(false);
+  }
+//toggle event
+  close(){
+    this.closeForm.emit(false);
+  }
 }

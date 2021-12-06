@@ -1,43 +1,42 @@
-<h1 mat-dialog-title>Add new Employee Details </h1>
-<div mat-dialog-content style="width: 100%;">
-    <form [formGroup]="form" >
-      <div class="form-group">
-          <label for="firstname">First Name</label>
-        <input type="text"  class="form-control" id="firstname" formControlName="firstName" matInput  >
-      </div>
-      <div class="form-group">
-          <label for="lastname" >Last Name</label>
-        <input type="text" class="form-control" formControlName="lastName" matInput >
-      </div>
-      <div class="form-group">
-        <label for="email" >Email Address</label>
-        <input type="email" id="email" class="form-control" formControlName="email" matInput >
+<div class="card p-2 mx-auto">
+  <form [formGroup]="form" class="form mt-4" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="firstname">First Name</label>
+      <input type="text" id="firstname" class="form-control" formControlName="FirstName">
     </div>
     <div class="form-group">
-      <label for="gender" >Gender</label>
-      <select formControlName="gender" class="form-control" id="gender" >
-        <option *ngFor="let item of gender">{{item.name}}</option>
-      </select>
-   </div>
+      <label for="lastname">Last Name</label>
+      <input type="text" id="lastname" class="form-control" formControlName="LastName">
+    </div>
     <div class="form-group">
-      <label for="role" >Role</label>
-      <select formControlName="role" class="form-control" id="role" >
+      <label for="Email">Email Address</label>
+      <input type="email" id="Email" class="form-control" formControlName="Email">
+    </div>
+    <div class="form-group">
+      <label for="role">Role</label>
+      <select class="form-control" name="" id="role" formControlName="Role">
         <option *ngFor="let item of roles">{{item.name}}</option>
       </select>
-   </div>
-   <div class="form-group">
-    <label for="city" >City</label>
-    <select formControlName="city" class="form-control" id="city" >
-      <option *ngFor="let item of city">{{item.name}}</option>
-    </select>
- </div>
- <div class="form-group">
-   <label for="address">Address</label>
-   <textarea class="form-control" formControlName="address"></textarea>
- </div>
-    </form>
-</div>
-<div mat-dialog-actions>
-  <button mat-button color="warn" (click)="onNoClick()">Cancel</button>
-  <button mat-stroked-button color="accent" [mat-dialog-close]="this.form.value" cdkFocusInitial>Save</button>
+    </div>
+    <div class="form-group">
+      <label for="gender">Gender</label>
+      <select class="form-control" name="" id="gender" formControlName="Gender">
+        <option *ngFor="let item of  gender">{{item.name}}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="role">City</label>
+      <select class="form-control" name="" id="role" formControlName="City">
+        <option *ngFor="let item of city">{{item.name}}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="address">Address</label>
+      <textarea id="address" cols="30" rows="5" formControlName="Address"></textarea>
+    </div>
+    <button class="btn btn-primary btn-block" [disabled]="form.invalid">Submit</button>
+    <button class="btn btn-primary btn-block" (click)="close()">Cancel</button>
+
+  </form>
 </div>

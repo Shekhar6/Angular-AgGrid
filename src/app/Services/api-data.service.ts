@@ -2,7 +2,7 @@ import { apiEndPoint } from './apiUrl';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Employee } from '../Model/Employee';
+
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +16,11 @@ export class ApiDataService {
   getData():Observable<any> {
     return this.http.get(this.apiEndPoint)
   }
+  postData(data:any):Observable<any>{
+    return this.http.post(this.apiEndPoint,data);
+  }
   
-  postData(data:Employee):Observable<any>{
+  puttData(data:any):Observable<any>{
     return this.http.put(this.apiEndPoint,data)
   }
 

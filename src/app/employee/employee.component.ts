@@ -1,8 +1,7 @@
-import { AddComponent } from './add/add.component';
 import { Component, OnInit } from '@angular/core';
 import { ColDef } from 'ag-grid-community';
 import { ApiDataService } from '../Services/api-data.service';
-import { MatDialog} from '@angular/material/dialog';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -12,10 +11,19 @@ import { MatDialog} from '@angular/material/dialog';
 })
 export class EmployeeComponent implements OnInit {
 
+  isValid : boolean = false;
+
+
+  gender:any;
+  roles:any;
+  city:any;
+
+  editData:any;
+  
   //Declaring columns for display in Ag-Grid
 
   columnDefs: ColDef[] = [
-    { field: 'firstName',filter:true,sortable:true,editable:true  },
+    { field: 'firstName',filter:true,sortable:true,editable:true , checkboxSelection: true,cellRenderer:(param) => {return `<a href="details/${param.value}" routerLink="details/${param.value}">`+param.value+`</a>`} },
     { field: 'lastName',filter:true,sortable:true,editable:true },
     { field: 'email',filter:true,sortable:true,editable:true },
     {field:'gender',filter:true,sortable:true,editable:true },
@@ -34,14 +42,14 @@ gridOptions = {
   
   rowData: this.rowData,
   columnDefs: this.columnDefs,
-  rowSelection: 'multiple',
+  rowSelection: 'single',
   // CALLBACKS
   getRowHeight: (params) => 50
 }
 
 //constructor
 
-constructor(private apiData:ApiDataService,public dialog: MatDialog) {
+constructor(private apiData:ApiDataService,private route: Router) {
   
 }
 
@@ -50,18 +58,32 @@ constructor(private apiData:ApiDataService,public dialog: MatDialog) {
     this.apiData.getData().subscribe(res => {
       this.rowData = res;
     })
-  }
 
+    //reading city info
+    this.apiData.getCity().subscribe(res => {
+      this.city = res;
+     
+    })
+    //reading roles info
+    this.apiData.getRoles().subscribe(res => {
+      this.roles = res;
+     
+    })
+
+    //reading gender info
+    this.apiData.getGender().subscribe(res => {
+      this.gender = res;
+      console.log(this.gender)
+    })
+  }
 
 //Updating selected cell data
   onCellEditingStarted(event){
-    //const dialogRef = this.dialog.open(AddComponent, {width: '500px', data : event.data});
-    console.log(event.data);
+    console.log("selected",event.data);
     this.apiData.postData(event.data).subscribe(e => console.log(e));
   }
 
 //Deleting selected row data in grid 
-
   OnDeleteRow(agGrid){
     var selectedData = agGrid.api.getSelectedRows();
 
@@ -76,14 +98,38 @@ constructor(private apiData:ApiDataService,public dialog: MatDialog) {
   }
 
   //Inserting new Data
-  OpenDialog(agGrid): void {
-    const dialogRef = this.dialog.open(AddComponent, {width: '500px',});
+  OpenDialog(): void {
 
-    dialogRef.afterClosed().subscribe(result => 
-      {
-       //console.log(result);
-       this.apiData.postData(result).subscribe(res => console.log('api',res));
-       agGrid.api.updateRowData({ add:[result] });
-      });
+    this.isValid = !this.isValid
+  }
+
+  //Search implementation
+    onQuickFilterChanged(grid,event){
+    grid.api.setQuickFilter(event.target.value);
+  }
+
+  //Editing Data
+  edit(agGrid){
+    var data = agGrid.api.getSelectedRows();
+    this.editData = data;
+    this.isValid = !this.isValid;
+
+    console.log(data);
+    
+  }
+
+  //Adding data 
+  addEmployee(data : any){
+    debugger;
+    console.log(data);
+    /*
+    this.apiData.postData(data).subscribe(res => console.log(res))
+    this.isValid = !this.isValid;*/
+  }
+
+  //Cancel
+  cancel(value){
+    this.isValid = value;
   }
 }
+

@@ -10,10 +10,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
 import { EmployeeComponent } from './employee/employee.component';
-import { AddComponent } from './employee/add/add.component';
-import { DeleteComponent } from './employee/delete/delete.component';
-import { DetailsComponent } from './employee/details/details.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { AddComponent } from './employee/add/add.component';
+import { DetailsComponent } from './employee/details/details.component';
 
 
 @NgModule({
@@ -21,7 +20,6 @@ import { ReactiveFormsModule } from '@angular/forms';
     AppComponent,
     EmployeeComponent,
     AddComponent,
-    DeleteComponent,
     DetailsComponent
   ],
   imports: [

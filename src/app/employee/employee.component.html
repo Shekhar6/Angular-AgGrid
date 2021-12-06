@@ -1,22 +1,46 @@
 <div class="row">
-    <div class="col-md-4">   
-        <!--Ag Grid -->     
+    <div *ngIf="isValid; then addCard else grid"></div>
+
+    <ng-template #grid>
+
+    <div class="container-fluid" style="display: flex; justify-content: space-between;align-items: center; width: 100%;"> 
+        <div class="m-4">
+            <button (click)="OpenDialog()" class="btn btn-success mr-4">Add New</button>
+            <button (click)="OnDeleteRow(this.grid)" class="btn btn-warning">Delete Row</button>
+        </div>
+        <div style="display: flex;justify-content: space-between;">
+            <input (keyup)="onQuickFilterChanged(grid,$event)" class="form-control mr-3" placeholder="Search">
+            <button  class="btn btn-primary mr-4" (click)="edit(this.grid)">Edit</button>
+        </div>
+    </div>
+    <div class="col-md-4">        
+        <!--Ag Grid -->           
         <ag-grid-angular
             #grid
             style="width: 95vw; height: 350px;"
             class="ag-theme-alpine"
-            (cellEditingStopped)="onCellEditingStarted($event)"
+            (cellEditingStarted)="onCellEditingStarted($event)"
             [rowData]="rowData"
             [columnDefs]="columnDefs"
             [gridOptions]="gridOptions"
             >
-        </ag-grid-angular>
-        <!--Insert And Delete-->
-        <div class="m-4">
-        <button (click)="OpenDialog(this.grid)" class="btn btn-success mr-4">Add New</button>
-        <button (click)="OnDeleteRow(this.grid)" class="btn btn-warning">Delete Row</button>
-        </div>
-
+        </ag-grid-angular>     
     </div>
+</ng-template>   
+
+
+    <ng-template #addCard>
+        <div class="col-md-4">
+
+            <app-add 
+            [gender]="gender"
+            [city]="city"
+            [roles]="roles"
+            [addItem]="editData"
+            (addData)="addEmployee($event)" 
+            (closeForm)="cancel($event)"></app-add>
+        </div>
+    </ng-template>
+    
 
 </div>

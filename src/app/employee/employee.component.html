@@ -38,7 +38,8 @@
             [roles]="roles"
             [addItem]="editData"
             (addData)="addEmployee($event)" 
-            (closeForm)="cancel($event)"></app-add>
+            (closeForm)="cancel($event)"
+            (updateData)="onUpdate($event)"></app-add>
         </div>
     </ng-template>
     

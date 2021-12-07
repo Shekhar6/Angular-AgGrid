@@ -20,13 +20,18 @@ export class AddComponent implements OnInit {
 
   @Output() addData = new EventEmitter<any>();
 
+  @Output() updateData = new EventEmitter<any>();
+
   //formGroup
   form:any;
 
+  //flag
+  flag:boolean=true;
+
   ngOnInit(): void {
-    console.log(this.addItem)
-    console.log(this.addItem)
+    
     if(this.addItem === undefined){
+      this.flag = true;
     this.form = new FormGroup({
       FirstName: new FormControl('',Validators.required),
       LastName: new FormControl('',Validators.required),
@@ -38,6 +43,8 @@ export class AddComponent implements OnInit {
     })
   }
   else {
+    this.flag = false;
+    console.log("flag",this.flag)
     this.form = new FormGroup({
       FirstName: new FormControl(this.addItem[0].firstName,Validators.required),
       LastName: new FormControl(this.addItem[0].lastName,Validators.required),
@@ -45,7 +52,8 @@ export class AddComponent implements OnInit {
       Gender:new FormControl(this.addItem[0].gender,Validators.required),
       Address:new FormControl(this.addItem[0].address,Validators.required),
       City:new FormControl(this.addItem[0].city,Validators.required),
-      Email:new FormControl(this.addItem[0].email,Validators.required)
+      Email:new FormControl(this.addItem[0].email,Validators.required),
+      id:new FormControl(this.addItem[0].id,)
     })
 
     /**firstName: 'shekhar', lastName: 'Patel', role: 'HR', gender: 'Male' */
@@ -61,4 +69,12 @@ export class AddComponent implements OnInit {
   close(){
     this.closeForm.emit(false);
   }
+
+  //update
+  onUpdate(){
+    this.updateData.emit(this.form.value);
+    this.form.reset();
+    this.close();
+  }
+  
 }

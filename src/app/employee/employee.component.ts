@@ -55,10 +55,7 @@ constructor(private apiData:ApiDataService,private route: Router) {
 
 //reading data whenever componet rendered
   ngOnInit(): void {
-    this.apiData.getData().subscribe(res => {
-      this.rowData = res;
-    })
-
+    this.getData();
     //reading city info
     this.apiData.getCity().subscribe(res => {
       this.city = res;
@@ -74,6 +71,13 @@ constructor(private apiData:ApiDataService,private route: Router) {
     this.apiData.getGender().subscribe(res => {
       this.gender = res;
       console.log(this.gender)
+    })
+  }
+//getting data
+  getData(){
+    this.apiData.getData().subscribe(res => {
+      this.rowData = res;
+      console.log(res);
     })
   }
 
@@ -119,12 +123,21 @@ constructor(private apiData:ApiDataService,private route: Router) {
   }
 
   //Adding data 
-  addEmployee(data : any){
-    debugger;
-    console.log(data);
-    /*
-    this.apiData.postData(data).subscribe(res => console.log(res))
-    this.isValid = !this.isValid;*/
+  addEmployee(data : any){    
+    this.apiData.postData(data).subscribe(res =>
+      { 
+        this.getData();
+        console.log(res)
+      });
+   
+  }
+
+  //Updating data
+  onUpdate(data:any):void{
+    this.apiData.puttData(data).subscribe(res => {
+      console.log(res);
+    })
+    this.getData();
   }
 
   //Cancel

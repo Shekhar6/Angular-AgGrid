@@ -1,5 +1,9 @@
 <div class="card p-2 mx-auto">
-  <form [formGroup]="form" class="form mt-4" (ngSubmit)="onSubmit()">
+  <form [formGroup]="form" class="form mt-4" >
+    <div *ngIf="flag==false" class="form-group">
+      <label for="id">User Id</label>
+      <input type="number" id="id" class="form-control" readonly formControlName="id"/>
+    </div>
     <div class="form-group">
       <label for="firstname">First Name</label>
       <input type="text" id="firstname" class="form-control" formControlName="FirstName">
@@ -35,8 +39,18 @@
       <label for="address">Address</label>
       <textarea id="address" cols="30" rows="5" formControlName="Address"></textarea>
     </div>
-    <button class="btn btn-primary btn-block" [disabled]="form.invalid">Submit</button>
+    
+    <div *ngIf="flag; then isFlag else save"></div>
     <button class="btn btn-primary btn-block" (click)="close()">Cancel</button>
 
   </form>
 </div>
+
+<ng-template #isFlag>
+  <button class="btn btn-primary btn-block" [disabled]="form.invalid" (click)="onSubmit()">Submit</button>
+</ng-template>
+<ng-template #save>
+  
+  <button class="btn btn-primary btn-block" [disabled]="form.invalid" (click)="onUpdate()">Save</button>
+</ng-template>
+
